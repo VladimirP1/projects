@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <title>PCB images</title>
+</head>
+
+<body>
+    <a class="btn" onclick="openFile(trim_svg)">Load SVG</a>
+    <label for="cols">Cols:</label>
+    <input id="cols" type="number" value="3"/>
+    <label for="rows">Rows:</label>
+    <input id="rows" type="number" value="3"/>
+    <a class="btn" id="downloader">Download result</a>
+    <div id="svgplace" style="width:0px;height:0px;overflow: hidden;"></div>
+    <div id="outtable"></div>
+    <script>
+        function make_cell(data) {
+            var cell = document.createElement('div')
+            cell.style.display = 'inline-block'
+            cell.innerHTML = data
+            return cell;
+        }
+        function make_row(data) {
+            var row = document.createElement('div')
+            var cols = document.getElementById('cols').value
+            for (var i = 0; i < cols; i++) {
+                var cell = make_cell(data)
+                row.appendChild(cell)
+            }
+            row.appendChild(document.createElement('br'))
+            return row;
+        }
+        function make_table(data) {
+            var table = document.getElementById('outtable')
+            table.innerHTML = ""
+            var rows = document.getElementById('rows').value
+            for (var i = 0; i < rows; i++) {
+                var row = make_row(data)
+                table.appendChild(row)
+            }
+        }
+        function openFile(func) {
+            readFile = function (e) {
+                var file = e.target.files[0]
+                if (!file) {
+                    return
+                }
+                var reader = new FileReader()
+                reader.onload = function (e) {
+                    var contents = e.target.result
+                    fileInput.func(contents)
+                    document.body.removeChild(fileInput)
+                }
+                reader.readAsText(file)
+            }
+            fileInput = document.createElement("input")
+	        fileInput.type='file'
+	        fileInput.style.display='none'
+            fileInput.onchange = readFile
+            fileInput.func = func
+            document.body.appendChild(fileInput)
+            fileInput.click()
+        }
+        function send_to_user(data) {
+            var uri = 'data:image/svg+xml,' + encodeURIComponent(data);
+            var a = document.getElementById('downloader')
+            a.href = uri;
+            a.download = 'file.svg'
+        }
+        SVGLength.prototype.scale = function(scale) {
+            this.convertToSpecifiedUnits(this.SVG_LENGTHTYPE_CM) 
+            return this.valueInSpecifiedUnits * scale
+        }
+        function trim_svg(data) {
+            var svgplace = document.getElementById('svgplace')
+            svgplace.innerHTML = data
+            var svg = svgplace.children[0]
+            var bbox = svg.getBBox()
+
+            // Translate interesting part of image to (0,0)
+            var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute('transform', "translate(" + (-bbox.x) + "," + (-bbox.y) + ")")
+            //g.style = "transform:translate(" + (-bbox.x) + "px," + (-bbox.y) + "px);"
+            g.innerHTML = svg.innerHTML
+            svg.innerHTML = g.outerHTML
+
+            // Change viewbox and scale image size accordingly
+            var ow = svg.viewBox.baseVal.width
+            var oh = svg.viewBox.baseVal.height
+            var viewBox = [bbox.x, bbox.y, bbox.width, bbox.height].join(" ")
+            svg.setAttribute("viewBox", [0,0,bbox.width,bbox.height].join())
+            var nw = svg.viewBox.baseVal.width
+            var nh = svg.viewBox.baseVal.height
+            svg.setAttribute("width", ""+svg.width.baseVal.scale(nw/ow) + "cm")
+            svg.setAttribute("height", ""+svg.height.baseVal.scale(nh/oh) + "cm")
+            
+            send_to_user(svg.outerHTML)
+            make_table(svg.outerHTML)
+            
+        }
+
+    </script>
+    <style>
+        .btn {
+            margin: 0.1rem;
+            padding: 0.3rem 1rem 0.3rem 1rem;
+            display: inline-block;
+            border-radius: 0.5rem;
+            border: 2px solid greenyellow;
+            background-color: coral;
+            color: black;
+            text-decoration: none;
+        }
+        tr, td, table, div, svg {
+            margin: 0px;
+            padding: 0px;
+            white-space: nowrap;
+            border-spacing: 0px;
+        }
+        input {
+            width:3rem;
+        }
+    </style>
+</body>
+
+</html>
