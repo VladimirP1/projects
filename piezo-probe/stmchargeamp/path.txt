@@ -1,0 +1,1 @@
+/home/vladimir/Загрузки/sdcc-4.0.0/stm8flash:/home/vladimir/Downloads/sdcc-4.0.0/bin/:/home/vladimir/Downloads/sdcc-4.0.0/usr/local/bin/

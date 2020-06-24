@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name tinychargeamp)(type KiCad)(uri ${KIPRJMOD}/tinychargeamp.pretty)(options "")(descr ""))
+)

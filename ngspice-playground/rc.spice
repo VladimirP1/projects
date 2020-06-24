@@ -1,0 +1,12 @@
+PIEZO AMP
+
+
+C1 0 b 1 ic=1v
+R1 0 b 1
+.control
+    save all @R1[r] @C1[c]
+    tran 0.001ms 1.38s uic
+    plot V(b) 
+.endc
+.options savecurrents
+.end

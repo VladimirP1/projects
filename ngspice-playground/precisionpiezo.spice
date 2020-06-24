@@ -1,0 +1,39 @@
+PIEZO AMP
+
+.inc third-party/ad8512.cir
+.inc third-party/lm358.lib
+
+* power
+VCC hardvcc gnd DC 10
+R1 hardvcc vcc 1
+
+* voltage divider
+R2 vcc halfu 10k
+R3 halfu gnd 10k
+
+* middle voltage buffer
+xop1 halfu half vcc gnd half ad8512
+chalf half gnd 10u
+
+* generator
+Rsignal signal0 signal 1
+VGEN signal0 half SIN(0 0.1 20)
+*VGEN signal0 half PWL(0ms 0 1ms 1 2ms 0 3ms -1 4ms 0 5ms 0) r=0
+*VGEN signal0 half PWL(0ms 0 10ms 0.05 20ms 0 40ms 0) r=0
+*VGEN signal0 half PWL(0ms 0 1ms 0 1ms 1 2ms 1 2ms 0 4ms 0) r=0
+
+
+xamp signal vcc half gnd out amplifier
+
+.subckt amplifier input vcc mid gnd output
+xop input in- vcc gnd output lm358
+c1 in- output 0.1u
+r1 in- mid 20K
+r2 in- output 82K
+.ends
+
+.control
+    tran 0.05ms 100ms
+    plot V(signal) V(out) (sin(TIME*2*pi*20)*0.1+5) (-cos(TIME*2*pi*20)*0.2+5)
+.endc
+.end
