@@ -29,7 +29,7 @@ L Device:R_Small R1
 U 1 1 5EF3558A
 P 7000 3450
 F 0 "R1" H 7059 3496 50  0000 L CNN
-F 1 "1meg" H 7059 3405 50  0000 L CNN
+F 1 "120k" H 7059 3405 50  0000 L CNN
 F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7000 3450 50  0001 C CNN
 F 3 "~" H 7000 3450 50  0001 C CNN
 	1    7000 3450
@@ -56,17 +56,6 @@ F 2 "tinychargeamp:edgeconn3" H 9600 1950 50  0001 C CNN
 F 3 "~" H 9600 1950 50  0001 C CNN
 	1    9600 1950
 	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_Small R2
-U 1 1 5EF36A3A
-P 7350 3650
-F 0 "R2" V 7546 3650 50  0000 C CNN
-F 1 "?" V 7455 3650 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7350 3650 50  0001 C CNN
-F 3 "~" H 7350 3650 50  0001 C CNN
-	1    7350 3650
-	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:C_Small C2
@@ -148,13 +137,6 @@ F 3 "" H 4900 1900 50  0001 C CNN
 	1    4900 1900
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7250 3650 7000 3650
-Wire Wire Line
-	7000 3650 7000 3550
-Wire Wire Line
-	7000 3650 7000 3750
-Connection ~ 7000 3650
 $Comp
 L power:GND #PWR0105
 U 1 1 5EF468B9
@@ -170,44 +152,40 @@ Text Label 7000 3350 2    50   ~ 0
 PIEZO+
 Text Label 7000 3650 2    50   ~ 0
 PIEZO-
-Text Label 7450 3650 0    50   ~ 0
-REFGEN
-Text Label 5500 2600 0    50   ~ 0
-REFGEN
 Text Label 5500 2500 0    50   ~ 0
 PIEZO+
-Text Label 5500 2200 0    50   ~ 0
+Text Label 5800 2200 0    50   ~ 0
 PIEZO-
 Text Label 5500 2300 0    50   ~ 0
 OUT
 Text Label 5500 2700 0    50   ~ 0
 DW
 $Comp
-L Device:CP_Small C3
-U 1 1 5EF49C6A
+L Device:C_Small C1
+U 1 1 5EF4B09A
 P 7000 3850
-F 0 "C3" H 7088 3896 50  0000 L CNN
-F 1 "100u" H 7088 3805 50  0000 L CNN
-F 2 "Capacitor_Tantalum_SMD:CP_EIA-3528-15_AVX-H" H 7000 3850 50  0001 C CNN
+F 0 "C1" H 7092 3896 50  0000 L CNN
+F 1 "10u" H 7092 3805 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7000 3850 50  0001 C CNN
 F 3 "~" H 7000 3850 50  0001 C CNN
 	1    7000 3850
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C1
-U 1 1 5EF4B09A
-P 6700 3850
-F 0 "C1" H 6792 3896 50  0000 L CNN
-F 1 "10u" H 6792 3805 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6700 3850 50  0001 C CNN
-F 3 "~" H 6700 3850 50  0001 C CNN
-	1    6700 3850
-	1    0    0    -1  
+L Device:R_Small R3
+U 1 1 5EFB8AF6
+P 5700 2200
+F 0 "R3" V 5896 2200 50  0000 C CNN
+F 1 "22k" V 5805 2200 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 5700 2200 50  0001 C CNN
+F 3 "~" H 5700 2200 50  0001 C CNN
+	1    5700 2200
+	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	6700 3750 7000 3750
-Connection ~ 7000 3750
+	5500 2200 5600 2200
+Text Label 5500 2600 0    50   ~ 0
+PIEZO-
 Wire Wire Line
-	6700 3950 7000 3950
-Connection ~ 7000 3950
+	7000 3550 7000 3750
 $EndSCHEMATC
