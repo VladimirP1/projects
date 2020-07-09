@@ -78,7 +78,7 @@ int main() {
         
         
         //led(integral > 2000);
-        if (integral > 6000) {
+        if (integral > 9000) {
             led(1);
             _delay_ms(1);
             led(0);
