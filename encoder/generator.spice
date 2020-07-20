@@ -1,0 +1,93 @@
+sine wave generator
+
+* power
+VCC hardvcc gnd DC 12
+R1 hardvcc vcc 1
+Rxxx gnd 0 0
+
+.subckt osc vcc gnd out 
+* base bias for common base configuration
+RbiasH vcc b 9.8k
+RbiasL b gnd 1.1k
+Cbias gnd b 0.1u
+
+* amplification transistor
+QAMP c b e QNPN
+
+* resistors for voltage amplifier
+*Rvcc0 c vcc 5k
+Rgnd0 e gnd 1k
+
+* resonant tank
+L1 vcc cxr 4.7m
+RLL cxr c 10
+Cr1 vcc e 2u 
+Cr2 e c 0.1u
+* amplitude limiting
+RD cxr_ cxr 1k
+D1 vcc cxr_ DMOD
+D2 cxr_ vcc DMOD
+
+* output
+Rout0 out gnd 100meg
+Cout0 out c 1u
+.model QNPN NPN
+.model DMOD D
+.ends
+
+.subckt bufh vcc gnd in out
+Cdc in inac 1u
+Rmid0 inac vcc 110k
+Rmid1 inac gnd 110k
+Qamp vcc inac pd QNPN
+Rdown pd gnd 120
+Cout pd out 1u
+Rout in out 10meg
+.model QNPN NPN
+.ends
+
+.subckt bufl vcc gnd in out
+Cdc in inac 1u
+Rmid0 inac vcc 110k
+Rmid1 inac gnd 110k
+Qamp gnd inac pu QPNP
+Rup pu vcc 120
+Cout pu out 1u
+Rout in out 10meg
+.model QPNP PNP
+.ends
+
+Xosc vcc gnd osc0 osc
+Xbufl0 vcc gnd osc0 osc1 bufl
+
+* input
+Rin osc1 e 0.5k
+
+* bias
+RbiasH vcc b 13k
+RbiasL gnd b 1.1k
+Cbias gnd b 0.1u
+
+* transistor
+Qamp c b e QNPN
+
+* load resistances
+Rup c vcc 5k
+Rdown e gnd 2k
+
+* decoupling cap
+Cdec c out 1u
+Rdec gnd out 10meg
+
+
+
+Xbufh vcc gnd out buffered0 bufh
+Xbufl vcc gnd out buffered1 bufl
+
+.model QNPN NPN 
+.control
+    save all @Qamp[ib]
+    tran 0.001ms 401ms 400ms 
+    plot V(out) V(osc0) v(e) (v(b)-v(e))
+.endc
+.end

@@ -1,0 +1,43 @@
+sine wave generator
+
+* power
+VCC hardvcc gnd DC 12
+R1 hardvcc vcc 1
+Rxxx gnd 0 0
+
+* base bias for common base configuration
+R2 vcc b 28k
+R3 b gnd 40k
+
+* amplification transistor
+QAMP c b e QNPNAMP
+
+* resistors for voltage amplifier
+Rvcc0 c vcc 5k
+Rgnd0 e gnd 2k
+Rvcc1 e vcc 2k
+
+* resonant tank
+L1 vcc cx 1m
+Cr1 vcc e 1u 
+Cr2 e cx 0.1u
+Cxx cx cpa 10u
+
+* power amplifier
+QPA vcc c cpar QNPNAMP
+RPA cpar gnd 1k
+RPA1 cpar cpa 1k
+
+* generator
+*VGEN ecc gnd SIN(0 0.5 10k)
+*Cxx ecc e 1u
+
+* .model QNPNAMP NPN
+.MODEL QNPNAMP NPN
+.control
+ save @Rgnd0[i] @Rvcc0[i] all
+    tran 0.001ms 401ms 400ms uic
+*    plot @Rvcc0[i]
+    plot V(e) V(c) V(b)
+.endc
+.end
